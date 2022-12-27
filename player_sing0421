@@ -1,0 +1,32 @@
+from operator import le
+import random
+import numpy as np
+from reversi.strategies import AbstractStrategy, Timer
+
+
+class Corner1_Edge2_Ungreedy3(AbstractStrategy):
+    def next_move(self, color, board):
+        size = board.size
+        legal_moves = board.get_legal_moves(color)
+        
+        for corner in [(0, 0), (0, size-1), (size-1, 0), (size-1, size-1)]:
+            if corner in legal_moves:
+                return corner
+
+        for move in legal_moves:
+            move_x, move_y = move
+            if move_x in [0,size-1] or move_y in [0,size-1]:
+                return move
+        
+        base_score = board._black_score if color == 'black' else board._white_score
+        max_score = base_score
+        max_move = random.choice(legal_moves)
+        
+        for move in legal_moves:
+            move_x, move_y = move
+            score = base_score + len(board.get_flippable_discs(color,move_x,move_y))
+            if score < max_score:
+                max_score = score
+                max_move = move
+
+        return max_move
