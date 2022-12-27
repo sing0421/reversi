@@ -4,7 +4,7 @@ import numpy as np
 from reversi.strategies import AbstractStrategy, Timer
 
 
-class Corner1_Edge2_Ungreedy3(AbstractStrategy):
+class Corner1_Edge2_Ungreedy3(AbstractStrategy):　#角→辺の順に優先、かつ出来るだけ駒を取らないように打つ
     def next_move(self, color, board):
         size = board.size
         legal_moves = board.get_legal_moves(color)
